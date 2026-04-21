@@ -1,0 +1,871 @@
+
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --brand:#0F1923;
+    --accent:#00C2FF;
+    --accent2:#7B61FF;
+    --gold:#F5A623;
+    --danger:#E85D30;
+    --success:#1DAB72;
+    --radius:10px;
+    --mono:'Courier New',monospace;
+  }
+  body{background:transparent;font-family:var(--font-sans,'system-ui');color:var(--color-text-primary)}
+
+  .prd-wrap{max-width:860px;margin:0 auto;padding:0 0 60px}
+
+  /* COVER */
+  .cover{
+    background:var(--color-background-secondary);
+    border:0.5px solid var(--color-border-secondary);
+    border-radius:16px;
+    padding:48px 48px 40px;
+    margin-bottom:32px;
+    position:relative;
+    overflow:hidden;
+  }
+  .cover::before{
+    content:'';
+    position:absolute;top:-60px;right:-60px;
+    width:280px;height:280px;
+    background:radial-gradient(circle,rgba(0,194,255,.10) 0%,transparent 70%);
+    pointer-events:none;
+  }
+  .cover-badge{
+    display:inline-flex;align-items:center;gap:6px;
+    background:rgba(0,194,255,.12);
+    border:0.5px solid rgba(0,194,255,.35);
+    color:#00C2FF;
+    font-size:11px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;
+    padding:4px 12px;border-radius:20px;margin-bottom:20px;
+  }
+  .cover-title{font-size:38px;font-weight:600;line-height:1.15;letter-spacing:-.02em;margin-bottom:10px}
+  .cover-title span{color:#00C2FF}
+  .cover-tagline{font-size:15px;color:var(--color-text-secondary);margin-bottom:28px;max-width:500px}
+  .cover-meta{display:flex;flex-wrap:wrap;gap:24px}
+  .meta-item{font-size:12px}
+  .meta-label{color:var(--color-text-tertiary);display:block;margin-bottom:2px;text-transform:uppercase;letter-spacing:.06em;font-size:10px}
+  .meta-val{font-weight:500;font-size:13px}
+  .cover-version{
+    position:absolute;top:24px;right:24px;
+    background:var(--color-background-primary);
+    border:0.5px solid var(--color-border-secondary);
+    border-radius:6px;padding:4px 10px;
+    font-size:11px;font-weight:500;color:var(--color-text-secondary);
+    font-family:var(--mono)
+  }
+
+  /* NAV */
+  .toc{
+    background:var(--color-background-secondary);
+    border:0.5px solid var(--color-border-tertiary);
+    border-radius:var(--radius);
+    padding:20px 24px;
+    margin-bottom:28px;
+  }
+  .toc-title{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.08em;color:var(--color-text-tertiary);margin-bottom:12px}
+  .toc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:4px}
+  .toc-item{
+    font-size:13px;color:var(--color-text-secondary);
+    padding:5px 8px;border-radius:6px;cursor:pointer;
+    display:flex;align-items:center;gap:6px;
+    transition:background .15s,color .15s;
+  }
+  .toc-item:hover{background:var(--color-background-primary);color:var(--color-text-primary)}
+  .toc-num{font-family:var(--mono);font-size:10px;color:var(--color-text-tertiary);min-width:18px}
+
+  /* SECTIONS */
+  .section{margin-bottom:36px}
+  .section-header{
+    display:flex;align-items:center;gap:12px;
+    padding-bottom:12px;
+    border-bottom:0.5px solid var(--color-border-tertiary);
+    margin-bottom:20px;
+  }
+  .section-num{
+    font-family:var(--mono);font-size:10px;font-weight:600;
+    background:var(--color-background-secondary);
+    border:0.5px solid var(--color-border-secondary);
+    color:var(--color-text-secondary);
+    padding:3px 7px;border-radius:4px;
+  }
+  .section-title{font-size:18px;font-weight:500}
+  .section-badge{
+    margin-left:auto;font-size:10px;font-weight:500;
+    padding:3px 8px;border-radius:10px;
+    text-transform:uppercase;letter-spacing:.06em;
+  }
+  .badge-core{background:rgba(0,194,255,.12);color:#00C2FF;border:0.5px solid rgba(0,194,255,.3)}
+  .badge-arch{background:rgba(123,97,255,.12);color:#7B61FF;border:0.5px solid rgba(123,97,255,.3)}
+  .badge-wf{background:rgba(245,166,35,.12);color:#c87f0a;border:0.5px solid rgba(245,166,35,.3)}
+  .badge-team{background:rgba(29,171,114,.12);color:#1DAB72;border:0.5px solid rgba(29,171,114,.3)}
+
+  /* TEXT */
+  .prose{font-size:14px;line-height:1.75;color:var(--color-text-secondary);margin-bottom:12px}
+  .prose strong{color:var(--color-text-primary);font-weight:500}
+
+  /* PROBLEM/SOLUTION CARDS */
+  .ps-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+  .ps-card{
+    padding:16px 18px;border-radius:var(--radius);
+    border:0.5px solid var(--color-border-tertiary);
+  }
+  .ps-card.problem{background:rgba(232,93,48,.06);border-color:rgba(232,93,48,.25)}
+  .ps-card.solution{background:rgba(29,171,114,.06);border-color:rgba(29,171,114,.25)}
+  .ps-icon{font-size:18px;margin-bottom:8px}
+  .ps-label{font-size:10px;text-transform:uppercase;letter-spacing:.08em;font-weight:600;margin-bottom:6px}
+  .ps-card.problem .ps-label{color:#E85D30}
+  .ps-card.solution .ps-label{color:#1DAB72}
+  .ps-text{font-size:13px;line-height:1.6;color:var(--color-text-secondary)}
+
+  /* ARCHITECTURE TABLE */
+  .arch-table{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:16px}
+  .arch-table th{
+    text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.07em;font-weight:600;
+    color:var(--color-text-tertiary);padding:8px 12px;
+    border-bottom:0.5px solid var(--color-border-tertiary);
+  }
+  .arch-table td{
+    padding:10px 12px;border-bottom:0.5px solid var(--color-border-tertiary);
+    vertical-align:top;line-height:1.5;
+  }
+  .arch-table tr:last-child td{border-bottom:none}
+  .arch-table tr:hover td{background:var(--color-background-secondary)}
+  .layer-tag{
+    font-size:10px;font-weight:600;padding:3px 8px;border-radius:4px;
+    white-space:nowrap;font-family:var(--mono);letter-spacing:.04em;
+  }
+  .tag-orch{background:rgba(123,97,255,.12);color:#7B61FF}
+  .tag-exec{background:rgba(0,194,255,.12);color:#00C2FF}
+  .tag-spec{background:rgba(245,166,35,.12);color:#c87f0a}
+  .tag-pay{background:rgba(232,93,48,.12);color:#E85D30}
+  .tag-settle{background:rgba(29,171,114,.12);color:#1DAB72}
+  .tag-mem{background:rgba(100,120,140,.12);color:var(--color-text-secondary)}
+  .comp-name{font-weight:500;color:var(--color-text-primary);margin-bottom:2px}
+  .comp-desc{font-size:12px;color:var(--color-text-secondary)}
+
+  /* WORKFLOW STEPS */
+  .workflow{display:flex;flex-direction:column;gap:0;margin-bottom:16px;position:relative}
+  .workflow::before{
+    content:'';position:absolute;left:20px;top:40px;bottom:40px;width:1px;
+    background:var(--color-border-tertiary);
+  }
+  .wf-step{
+    display:flex;gap:16px;align-items:flex-start;
+    padding:14px 16px 14px 0;
+    position:relative;z-index:1;
+  }
+  .wf-num{
+    width:40px;height:40px;border-radius:50%;flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;
+    font-size:13px;font-weight:600;font-family:var(--mono);
+    border:0.5px solid var(--color-border-secondary);
+    background:var(--color-background-primary);
+    color:var(--color-text-secondary);
+  }
+  .wf-num.active{background:rgba(0,194,255,.12);border-color:rgba(0,194,255,.4);color:#00C2FF}
+  .wf-content{flex:1;padding-top:8px}
+  .wf-title{font-size:14px;font-weight:500;margin-bottom:4px}
+  .wf-desc{font-size:13px;color:var(--color-text-secondary);line-height:1.6}
+  .wf-code{
+    margin-top:8px;background:var(--color-background-secondary);
+    border:0.5px solid var(--color-border-tertiary);
+    border-radius:6px;padding:8px 12px;
+    font-size:11px;font-family:var(--mono);color:var(--color-text-secondary);
+    line-height:1.6;
+  }
+  .wf-code .hl{color:#00C2FF}
+  .wf-code .hl2{color:#7B61FF}
+  .wf-code .hl3{color:#1DAB72}
+
+  /* FEATURES */
+  .feat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin-bottom:16px}
+  .feat-card{
+    padding:16px 18px;
+    background:var(--color-background-primary);
+    border:0.5px solid var(--color-border-tertiary);
+    border-radius:var(--radius);
+  }
+  .feat-icon{
+    width:32px;height:32px;border-radius:8px;
+    display:flex;align-items:center;justify-content:center;
+    font-size:14px;margin-bottom:10px;
+  }
+  .feat-name{font-size:13px;font-weight:500;margin-bottom:4px}
+  .feat-desc{font-size:12px;color:var(--color-text-secondary);line-height:1.55}
+  .feat-price{
+    margin-top:8px;font-family:var(--mono);font-size:11px;
+    color:#1DAB72;font-weight:600;
+  }
+
+  /* TEAM */
+  .team-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px;margin-bottom:16px}
+  .team-card{
+    padding:16px 16px;
+    background:var(--color-background-primary);
+    border:0.5px solid var(--color-border-tertiary);
+    border-radius:var(--radius);
+  }
+  .team-avatar{
+    width:40px;height:40px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-size:14px;font-weight:600;margin-bottom:10px;
+    border:0.5px solid var(--color-border-secondary);
+    color:#fff;
+  }
+  .team-role{font-size:11px;text-transform:uppercase;letter-spacing:.07em;font-weight:600;margin-bottom:3px}
+  .team-name{font-size:14px;font-weight:500;margin-bottom:4px}
+  .team-focus{font-size:12px;color:var(--color-text-secondary);line-height:1.5}
+  .team-owns{
+    margin-top:10px;padding-top:10px;
+    border-top:0.5px solid var(--color-border-tertiary);
+  }
+  .team-owns-label{font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:var(--color-text-tertiary);margin-bottom:5px}
+  .team-pill{
+    display:inline-block;font-size:10px;font-weight:500;
+    padding:2px 7px;border-radius:4px;margin:2px 2px 0 0;
+    background:var(--color-background-secondary);
+    border:0.5px solid var(--color-border-tertiary);
+    color:var(--color-text-secondary);
+  }
+
+  /* VALIDATION CHECKLIST */
+  .checklist{display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
+  .check-item{
+    display:flex;align-items:flex-start;gap:10px;
+    padding:10px 14px;
+    background:var(--color-background-primary);
+    border:0.5px solid var(--color-border-tertiary);
+    border-radius:8px;font-size:13px;
+  }
+  .check-dot{
+    width:18px;height:18px;border-radius:50%;flex-shrink:0;margin-top:1px;
+    display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;
+  }
+  .dot-done{background:rgba(29,171,114,.15);color:#1DAB72;border:0.5px solid rgba(29,171,114,.4)}
+  .dot-warn{background:rgba(245,166,35,.15);color:#c87f0a;border:0.5px solid rgba(245,166,35,.4)}
+  .dot-todo{background:rgba(100,120,140,.1);color:var(--color-text-tertiary);border:0.5px solid var(--color-border-tertiary)}
+  .check-txt{flex:1;line-height:1.5}
+  .check-owner{font-size:11px;color:var(--color-text-tertiary);margin-top:2px}
+
+  /* ROADMAP */
+  .roadmap{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:16px}
+  .day-card{
+    padding:12px 12px;
+    background:var(--color-background-primary);
+    border:0.5px solid var(--color-border-tertiary);
+    border-radius:8px;
+  }
+  .day-label{font-size:10px;text-transform:uppercase;letter-spacing:.07em;font-weight:600;color:var(--color-text-tertiary);margin-bottom:4px}
+  .day-title{font-size:12px;font-weight:500;margin-bottom:8px;color:var(--color-text-primary)}
+  .day-tasks{list-style:none;display:flex;flex-direction:column;gap:4px}
+  .day-tasks li{font-size:11px;color:var(--color-text-secondary);line-height:1.45;padding-left:10px;position:relative}
+  .day-tasks li::before{content:'·';position:absolute;left:2px;color:var(--color-text-tertiary)}
+
+  /* METRICS */
+  .metrics-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+  .metric-card{
+    padding:14px 16px;
+    background:var(--color-background-secondary);
+    border-radius:8px;border:0.5px solid var(--color-border-tertiary);
+  }
+  .metric-label{font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:var(--color-text-tertiary);margin-bottom:4px}
+  .metric-val{font-size:20px;font-weight:600;font-family:var(--mono);margin-bottom:2px}
+  .metric-sub{font-size:11px;color:var(--color-text-secondary)}
+  .val-green{color:#1DAB72}
+  .val-red{color:#E85D30}
+  .val-blue{color:#00C2FF}
+
+  /* RISK */
+  .risk-table{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:16px}
+  .risk-table th{
+    text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.07em;
+    color:var(--color-text-tertiary);padding:8px 12px;
+    border-bottom:0.5px solid var(--color-border-tertiary);font-weight:600;
+  }
+  .risk-table td{padding:9px 12px;border-bottom:0.5px solid var(--color-border-tertiary);vertical-align:top}
+  .risk-table tr:last-child td{border-bottom:none}
+  .sev{
+    font-size:10px;font-weight:600;padding:2px 8px;border-radius:4px;white-space:nowrap;
+    font-family:var(--mono);letter-spacing:.04em;
+  }
+  .sev-high{background:rgba(232,93,48,.12);color:#E85D30;border:0.5px solid rgba(232,93,48,.3)}
+  .sev-med{background:rgba(245,166,35,.12);color:#c87f0a;border:0.5px solid rgba(245,166,35,.3)}
+  .sev-low{background:rgba(29,171,114,.12);color:#1DAB72;border:0.5px solid rgba(29,171,114,.3)}
+
+  /* DIVIDER */
+  .div{height:0.5px;background:var(--color-border-tertiary);margin:28px 0}
+
+  /* FOOTER */
+  .footer{
+    padding:20px 24px;background:var(--color-background-secondary);
+    border-radius:var(--radius);border:0.5px solid var(--color-border-tertiary);
+    display:flex;align-items:center;justify-content:space-between;
+    flex-wrap:wrap;gap:12px;
+  }
+  .footer-left{font-size:12px;color:var(--color-text-tertiary)}
+  .footer-right{display:flex;gap:8px;flex-wrap:wrap}
+  .footer-tag{
+    font-size:10px;font-weight:500;padding:3px 8px;border-radius:4px;
+    font-family:var(--mono);letter-spacing:.04em;
+    background:var(--color-background-primary);
+    border:0.5px solid var(--color-border-tertiary);
+    color:var(--color-text-secondary);
+  }
+
+  @media(max-width:560px){
+    .cover{padding:28px 20px}
+    .cover-title{font-size:26px}
+    .ps-grid,.roadmap,.metrics-grid{grid-template-columns:1fr}
+    .team-grid{grid-template-columns:1fr 1fr}
+    .section-title{font-size:15px}
+  }
+</style>
+
+<div class="prd-wrap">
+
+  <!-- COVER -->
+  <div class="cover">
+    <div class="cover-version">v1.0 DRAFT</div>
+    <div class="cover-badge">Product Requirements Document</div>
+    <div class="cover-title"><span>SWAN</span> — Social Workflow<br>& Agentic Network</div>
+    <div class="cover-tagline">The world's first high-frequency Social Media Marketing economy. Autonomous agents that hire, pay, and settle with each other — per task, per insight, per cent.</div>
+    <div class="cover-meta">
+      <div class="meta-item"><span class="meta-label">Status</span><span class="meta-val">Active Development</span></div>
+      <div class="meta-item"><span class="meta-label">Phase</span><span class="meta-val">Hackathon Sprint — 5 Days</span></div>
+      <div class="meta-item"><span class="meta-label">Target Chain</span><span class="meta-val">Arc L1 (USDC)</span></div>
+      <div class="meta-item"><span class="meta-label">Team Size</span><span class="meta-val">4 Engineers</span></div>
+      <div class="meta-item"><span class="meta-label">Protocol</span><span class="meta-val">x402 / EIP-3009</span></div>
+    </div>
+  </div>
+
+  <!-- TABLE OF CONTENTS -->
+  <div class="toc">
+    <div class="toc-title">Contents</div>
+    <div class="toc-grid">
+      <div class="toc-item" onclick="document.getElementById('s1').scrollIntoView({behavior:'smooth'})"><span class="toc-num">01</span> Problem & Vision</div>
+      <div class="toc-item" onclick="document.getElementById('s2').scrollIntoView({behavior:'smooth'})"><span class="toc-num">02</span> Technical Architecture</div>
+      <div class="toc-item" onclick="document.getElementById('s3').scrollIntoView({behavior:'smooth'})"><span class="toc-num">03</span> Core Workflow</div>
+      <div class="toc-item" onclick="document.getElementById('s4').scrollIntoView({behavior:'smooth'})"><span class="toc-num">04</span> Product Features</div>
+      <div class="toc-item" onclick="document.getElementById('s5').scrollIntoView({behavior:'smooth'})"><span class="toc-num">05</span> Team Structure</div>
+      <div class="toc-item" onclick="document.getElementById('s6').scrollIntoView({behavior:'smooth'})"><span class="toc-num">06</span> Validation Logic</div>
+      <div class="toc-item" onclick="document.getElementById('s7').scrollIntoView({behavior:'smooth'})"><span class="toc-num">07</span> Business Economics</div>
+      <div class="toc-item" onclick="document.getElementById('s8').scrollIntoView({behavior:'smooth'})"><span class="toc-num">08</span> Roadmap</div>
+      <div class="toc-item" onclick="document.getElementById('s9').scrollIntoView({behavior:'smooth'})"><span class="toc-num">09</span> Risk Register</div>
+      <div class="toc-item" onclick="document.getElementById('s10').scrollIntoView({behavior:'smooth'})"><span class="toc-num">10</span> Demo Checklist</div>
+    </div>
+  </div>
+
+  <!-- S1: PROBLEM & VISION -->
+  <div class="section" id="s1">
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <span class="section-title">Problem & Vision</span>
+      <span class="section-badge badge-core">Foundation</span>
+    </div>
+    <p class="prose">The Social Media Marketing industry runs on <strong>flat-rate subscription software</strong> — static tools that charge the same $100/month whether you run one campaign or a thousand. There is no market for individual insights. There is no mechanism for AI agents to autonomously purchase data from one another. SWAN changes both of these things at once.</p>
+    <div class="ps-grid">
+      <div class="ps-card problem">
+        <div class="ps-icon">⚠</div>
+        <div class="ps-label">The Problem</div>
+        <div class="ps-text">SMM tools are opaque black boxes. Fixed monthly pricing has zero alignment with value delivered. AI cannot autonomously transact for micro-data. Machine-to-machine commerce for marketing intelligence does not exist.</div>
+      </div>
+      <div class="ps-card solution">
+        <div class="ps-icon">✦</div>
+        <div class="ps-label">The Solution</div>
+        <div class="ps-text">SWAN decentralizes every marketing task into an autonomous micro-service. Each insight has a price. Each agent can hire any other agent. Value settles on-chain in real time using USDC nanopayments over the x402 HTTP protocol.</div>
+      </div>
+    </div>
+    <p class="prose">The core ideology is an <strong>Autonomous Marketing Protocol</strong>, not an SMM app. Any agent anywhere on the internet can plug into SWAN to buy or sell marketing intelligence denominated in USDC — without a subscription, without a middleman, without manual invoicing.</p>
+  </div>
+
+  <!-- S2: ARCHITECTURE -->
+  <div class="section" id="s2">
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <span class="section-title">Technical Architecture</span>
+      <span class="section-badge badge-arch">Architecture</span>
+    </div>
+    <p class="prose">SWAN is structured as a five-layer stack. Each layer has a single, clear responsibility. No layer owns logic that belongs to another. This separation keeps the system testable and ensures the 4-person team can work in parallel without conflicts.</p>
+    <table class="arch-table">
+      <thead>
+        <tr>
+          <th>Layer</th>
+          <th>Component</th>
+          <th>Role & Responsibility</th>
+          <th>Technology</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="layer-tag tag-orch">Orchestrator</span></td>
+          <td><div class="comp-name">CMO Agent</div><div class="comp-desc">Chief Marketing Officer</div></td>
+          <td>High-level reasoning, multi-step campaign planning, budget allocation, Deep Think mode, and dispatching task orders to execution agents. This is the single entry point from the user.</td>
+          <td>Gemini 3 Pro — Function Calling enabled</td>
+        </tr>
+        <tr>
+          <td><span class="layer-tag tag-exec">Execution</span></td>
+          <td><div class="comp-name">PM Agent</div><div class="comp-desc">Project Manager</div></td>
+          <td>Low-latency task coordination between CMO and specialists. Responsible for multimodal vision analysis — checking brand tone alignment in images and videos, and reading screenshot data.</td>
+          <td>Gemini 3 Flash — Vision enabled</td>
+        </tr>
+        <tr>
+          <td><span class="layer-tag tag-spec">Specialists</span></td>
+          <td><div class="comp-name">Worker Agents</div><div class="comp-desc">Niche Executors</div></td>
+          <td>Specialized open-source models accessed via a single unified API. Each worker exposes an x402 endpoint. Workers include: local slang model, code-heavy SMM model, sentiment analysis model, and KPI scraper.</td>
+          <td>Featherless API (Llama 3, DeepSeek, custom fine-tunes)</td>
+        </tr>
+        <tr>
+          <td><span class="layer-tag tag-pay">Payment Rail</span></td>
+          <td><div class="comp-name">x402 Gateway</div><div class="comp-desc">Currency Standard</div></td>
+          <td>Standardized HTTP 402 headers that allow any worker agent to request payment before delivering data. Implements the EIP-3009 authorization standard for gasless token transfers.</td>
+          <td>Circle x402 Protocol + Programmable Wallet</td>
+        </tr>
+        <tr>
+          <td><span class="layer-tag tag-settle">Settlement</span></td>
+          <td><div class="comp-name">Arc L1 Ledger</div><div class="comp-desc">Finality Layer</div></td>
+          <td>Deterministic, sub-second transaction finality. Gas is paid in USDC, keeping margin calculations clean and predictable. Batch settlement rolls up 50+ micro-payments into a single block.</td>
+          <td>Arc L1 — USDC native gas</td>
+        </tr>
+        <tr>
+          <td><span class="layer-tag tag-mem">State</span></td>
+          <td><div class="comp-name">Agent Memory</div><div class="comp-desc">Context Store</div></td>
+          <td>Short-term in-context state for each agent session. Long-term campaign data and wallet balances stored off-chain with on-chain hash anchors for auditability.</td>
+          <td>In-context + lightweight key-value store</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- S3: WORKFLOW -->
+  <div class="section" id="s3">
+    <div class="section-header">
+      <span class="section-num">03</span>
+      <span class="section-title">Core Workflow — The Payment Loop</span>
+      <span class="section-badge badge-wf">Workflow</span>
+    </div>
+    <p class="prose">The four-step payment loop is the beating heart of SWAN. Every interaction between agents follows this exact sequence. It is deterministic, auditable, and requires zero human intervention once initiated.</p>
+    <div class="workflow">
+      <div class="wf-step">
+        <div class="wf-num active">01</div>
+        <div class="wf-content">
+          <div class="wf-title">Protocol Handshake — x402 Request</div>
+          <div class="wf-desc">The CMO Agent (Gemini 3 Pro) identifies a task it cannot perform internally — for example, a KPI data pull on a niche platform. It constructs an HTTP request to the relevant Specialist Worker endpoint.</div>
+          <div class="wf-code"><span class="hl">GET</span> /kpi-report?platform=tiktok&period=7d<br><span class="hl2">Host:</span> specialist.featherless.worker<br><span class="hl2">Accept:</span> application/json</div>
+        </div>
+      </div>
+      <div class="wf-step">
+        <div class="wf-num active">02</div>
+        <div class="wf-content">
+          <div class="wf-title">402 Response — Payment Required</div>
+          <div class="wf-desc">The Specialist Worker agent responds with an HTTP 402 status and a payment instruction header. The amount is micro-priced. The CMO reads the header, validates the amount against its budget policy, and decides to pay.</div>
+          <div class="wf-code"><span class="hl">HTTP/1.1 402</span> Payment Required<br><span class="hl2">X-Payment-Required:</span> <span class="hl3">0.002 USDC</span><br><span class="hl2">X-Payment-Address:</span> arc:0xW0rker...<br><span class="hl2">X-Payment-Standard:</span> EIP-3009</div>
+        </div>
+      </div>
+      <div class="wf-step">
+        <div class="wf-num active">03</div>
+        <div class="wf-content">
+          <div class="wf-title">Agentic Settlement — Circle Programmable Wallet</div>
+          <div class="wf-desc">The CMO Agent accesses its Circle Programmable Wallet, signs an EIP-3009 transfer authorization, and broadcasts the payment to Arc L1. Settlement is deterministic and completes in under one second. No human signs anything.</div>
+          <div class="wf-code"><span class="hl2">signTransferAuthorization</span>(<br>&nbsp;&nbsp;from: cmoBudgetWallet,<br>&nbsp;&nbsp;to: workerAddress,<br>&nbsp;&nbsp;value: <span class="hl3">2000</span> <span class="hl">// 0.002 USDC in micro-units</span><br>&nbsp;&nbsp;deadline: now() + 30s<br>)</div>
+        </div>
+      </div>
+      <div class="wf-step">
+        <div class="wf-num active">04</div>
+        <div class="wf-content">
+          <div class="wf-title">Delivery + Multimodal Verification</div>
+          <div class="wf-desc">Upon on-chain confirmation, the Specialist delivers the data payload. The PM Agent (Gemini 3 Flash) performs multimodal verification — if the data includes screenshots or dashboards, the vision model confirms the data matches what was ordered before marking the task complete.</div>
+          <div class="wf-code"><span class="hl">POST</span> /deliver<br><span class="hl2">X-Payment-Proof:</span> arc:tx:0xAbc...<br><span class="hl2">Content-Type:</span> application/json<br><span class="hl3">→ Payload delivered. Vision check: PASS.</span></div>
+        </div>
+      </div>
+    </div>
+    <p class="prose">The entire loop — request, quote, pay, verify, deliver — completes in <strong>under 2 seconds</strong> for standard tasks. The CMO can execute this loop 50+ times in a single campaign planning session, with all payments batch-settled on Arc in a single block.</p>
+  </div>
+
+  <!-- S4: FEATURES -->
+  <div class="section" id="s4">
+    <div class="section-header">
+      <span class="section-num">04</span>
+      <span class="section-title">Product Features</span>
+      <span class="section-badge badge-core">SMM Core</span>
+    </div>
+    <p class="prose">SWAN's user-facing features are priced per-use, not per-month. Each feature maps to one or more agent interactions in the workflow above. Prices shown are indicative target costs for the demo and MVP.</p>
+    <div class="feat-grid">
+      <div class="feat-card">
+        <div class="feat-icon" style="background:rgba(0,194,255,.1)">📊</div>
+        <div class="feat-name">Nano-Audits</div>
+        <div class="feat-desc">A full KPI breakdown for a social account — reach, engagement rate, best-performing post types, and growth trend — delivered instantly by the Specialist Worker.</div>
+        <div class="feat-price">~$0.01 USDC per audit</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon" style="background:rgba(123,97,255,.1)">✍</div>
+        <div class="feat-name">Dynamic Hook Testing</div>
+        <div class="feat-desc">The CMO generates 50 caption or headline variations. A sentiment model tests each against audience data. The top-scoring variant is returned with a confidence score.</div>
+        <div class="feat-price">$0.0001 USDC per test variant</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon" style="background:rgba(245,166,35,.1)">📡</div>
+        <div class="feat-name">Active Group Pulse</div>
+        <div class="feat-desc">A persistent Specialist agent that monitors global social communities and private groups in real time. Reports on emerging trends, sentiment shifts, and viral patterns as they happen.</div>
+        <div class="feat-price">$0.0005 USDC per update</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon" style="background:rgba(29,171,114,.1)">👁</div>
+        <div class="feat-name">Visual Brand Check</div>
+        <div class="feat-desc">The PM Agent uses Gemini 3 Flash's vision capability to scan images and videos. It checks if the visual content matches the brand's defined color palette, tone, and style guide.</div>
+        <div class="feat-price">$0.0008 USDC per asset</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon" style="background:rgba(232,93,48,.1)">💬</div>
+        <div class="feat-name">Bulk Sentiment Read</div>
+        <div class="feat-desc">Ingests 500+ comments from a post in seconds. The Specialist sentiment model classifies each by emotion, extracts recurring themes, and surfaces the top 3 actionable insights.</div>
+        <div class="feat-price">$0.002 USDC per 500 comments</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon" style="background:rgba(100,120,200,.1)">⚡</div>
+        <div class="feat-name">Campaign Orchestration</div>
+        <div class="feat-desc">The CMO Agent coordinates a full end-to-end campaign — strategy, copywriting, scheduling, analysis — by autonomously hiring and paying the right Specialist for each sub-task.</div>
+        <div class="feat-price">Variable — pay per sub-task</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- S5: TEAM -->
+  <div class="section" id="s5">
+    <div class="section-header">
+      <span class="section-num">05</span>
+      <span class="section-title">Team Structure & Ownership</span>
+      <span class="section-badge badge-team">Team</span>
+    </div>
+    <p class="prose">The 4-person team is divided by system layer, not by task type. Each person owns a full vertical slice of the stack — they are responsible for both building and validating their domain. Daily sync at the end of each sprint day ensures integration points stay clean.</p>
+    <div class="team-grid">
+      <div class="team-card">
+        <div class="team-avatar" style="background:#7B61FF">AI</div>
+        <div class="team-role" style="color:#7B61FF">Member 1</div>
+        <div class="team-name">Orchestration Lead</div>
+        <div class="team-focus">Owns the CMO Agent system prompt, Gemini 3 Pro integration, and multi-step planning logic. Designs how the agent reasons about budget and task decomposition.</div>
+        <div class="team-owns">
+          <div class="team-owns-label">Owns</div>
+          <span class="team-pill">CMO Agent</span>
+          <span class="team-pill">Function Calling</span>
+          <span class="team-pill">Planning Logic</span>
+        </div>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar" style="background:#00C2FF">PM</div>
+        <div class="team-role" style="color:#00C2FF">Member 2</div>
+        <div class="team-name">Execution & Vision Lead</div>
+        <div class="team-focus">Owns the PM Agent using Gemini 3 Flash. Implements multimodal vision verification of delivered data and coordinates the routing between CMO and Workers.</div>
+        <div class="team-owns">
+          <div class="team-owns-label">Owns</div>
+          <span class="team-pill">PM Agent</span>
+          <span class="team-pill">Vision API</span>
+          <span class="team-pill">Task Router</span>
+        </div>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar" style="background:#E85D30">WK</div>
+        <div class="team-role" style="color:#E85D30">Member 3</div>
+        <div class="team-name">Specialist Workers Lead</div>
+        <div class="team-focus">Owns the Featherless API integration. Builds and maintains Worker Agent endpoints — x402 server, payment verification middleware, and specialist model routing.</div>
+        <div class="team-owns">
+          <div class="team-owns-label">Owns</div>
+          <span class="team-pill">Featherless API</span>
+          <span class="team-pill">x402 Server</span>
+          <span class="team-pill">Worker Models</span>
+        </div>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar" style="background:#1DAB72">TX</div>
+        <div class="team-role" style="color:#1DAB72">Member 4</div>
+        <div class="team-name">Payments & Settlement Lead</div>
+        <div class="team-focus">Owns Circle integration, Arc L1 wallet setup, EIP-3009 signing logic, and the batch settlement mechanism. Responsible for making the Arc Block Explorer show clean demo data.</div>
+        <div class="team-owns">
+          <div class="team-owns-label">Owns</div>
+          <span class="team-pill">Circle Wallet</span>
+          <span class="team-pill">Arc L1</span>
+          <span class="team-pill">Batch Settlement</span>
+        </div>
+      </div>
+    </div>
+    <p class="prose"><strong>Daily sync protocol:</strong> End of each sprint day, all four members run the full payment loop end-to-end together. If any integration point breaks, the team that owns the upstream component is responsible for the fix before the next day begins. No broken integrations carry over between days.</p>
+  </div>
+
+  <!-- S6: VALIDATION -->
+  <div class="section" id="s6">
+    <div class="section-header">
+      <span class="section-num">06</span>
+      <span class="section-title">Validation Logic & Quality Gates</span>
+      <span class="section-badge badge-team">QA</span>
+    </div>
+    <p class="prose">Each gate below must pass before the team moves to the next sprint day. The owner of each gate is responsible for running the test and confirming the result in the daily sync. Blocked gates escalate immediately — they do not wait for the next sync.</p>
+    <div class="checklist">
+      <div class="check-item">
+        <div class="check-dot dot-done">✓</div>
+        <div class="check-txt">
+          <strong>Gate 1 — Circle Account + Arc Testnet Funded:</strong> Developer account active. Testnet USDC received and visible in Circle console. At least one manual transfer confirmed on Arc Explorer.
+          <div class="check-owner">Owner: Member 4 (Payments) · Day 1</div>
+        </div>
+      </div>
+      <div class="check-item">
+        <div class="check-dot dot-done">✓</div>
+        <div class="check-txt">
+          <strong>Gate 2 — CMO Agent Responds to a Campaign Brief:</strong> Gemini 3 Pro system prompt loaded. Agent correctly identifies that it needs external data and emits a structured function call for payment.
+          <div class="check-owner">Owner: Member 1 (Orchestration) · Day 2</div>
+        </div>
+      </div>
+      <div class="check-item">
+        <div class="check-dot dot-warn">⋯</div>
+        <div class="check-txt">
+          <strong>Gate 3 — Worker Agent Returns 402 Response:</strong> At least one Featherless Worker endpoint live. Sends valid HTTP 402 with correct payment headers when queried without payment. Response parseable by CMO.
+          <div class="check-owner">Owner: Member 3 (Workers) · Day 3</div>
+        </div>
+      </div>
+      <div class="check-item">
+        <div class="check-dot dot-warn">⋯</div>
+        <div class="check-txt">
+          <strong>Gate 4 — Full Payment Loop Runs End-to-End:</strong> CMO receives 402 → signs EIP-3009 → payment confirmed on Arc → Worker delivers data. All 4 steps complete without manual intervention. Transaction visible on Arc Explorer.
+          <div class="check-owner">Owner: All Members (Integration) · Day 4</div>
+        </div>
+      </div>
+      <div class="check-item">
+        <div class="check-dot dot-todo">○</div>
+        <div class="check-txt">
+          <strong>Gate 5 — 50+ Micro-Transactions in Batch:</strong> CMO runs 50 task-hire cycles in sequence. Arc Explorer shows a single block containing the batch settlement. Dashboard displays all 50 payments with timestamps.
+          <div class="check-owner">Owner: Member 4 + Member 1 · Day 5</div>
+        </div>
+      </div>
+      <div class="check-item">
+        <div class="check-dot dot-todo">○</div>
+        <div class="check-txt">
+          <strong>Gate 6 — Multimodal Vision Verification Live:</strong> PM Agent (Gemini Flash) successfully reads a screenshot of an SMM dashboard. Identifies KPI data from the image. Confirms it matches the ordered payload before marking delivery complete.
+          <div class="check-owner">Owner: Member 2 (Execution) · Day 5</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- S7: ECONOMICS -->
+  <div class="section" id="s7">
+    <div class="section-header">
+      <span class="section-num">07</span>
+      <span class="section-title">Business Economics — The Margin Proof</span>
+      <span class="section-badge badge-core">Economics</span>
+    </div>
+    <p class="prose">The economic case for SWAN depends entirely on Arc L1's gas cost structure. This is the core "moat" — the reason SWAN cannot be replicated on Ethereum mainnet, Polygon, or any chain with non-zero transaction fees at the micro-payment scale.</p>
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-label">Revenue per transaction</div>
+        <div class="metric-val val-blue">$0.0021</div>
+        <div class="metric-sub">avg. specialist task price</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Gas cost on Arc L1</div>
+        <div class="metric-val val-green">$0.0000</div>
+        <div class="metric-sub">USDC-native gas, near zero</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Gas cost on ETH mainnet</div>
+        <div class="metric-val val-red">~$0.20</div>
+        <div class="metric-sub">renders model unprofitable</div>
+      </div>
+    </div>
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-label">Net margin per task (Arc)</div>
+        <div class="metric-val val-green">+$0.0019</div>
+        <div class="metric-sub">positive at every scale</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Net margin per task (ETH)</div>
+        <div class="metric-val val-red">−$0.1979</div>
+        <div class="metric-sub">structurally impossible</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">50-task batch margin (Arc)</div>
+        <div class="metric-val val-green">+$0.095</div>
+        <div class="metric-sub">one block, one settlement</div>
+      </div>
+    </div>
+    <p class="prose">The narrative for the demo: <strong>"This business model is physically impossible on any other chain."</strong> The Arc Explorer batch settlement screenshot is the single most important piece of evidence for the judges. It must show 50+ micro-transactions settled in one block with near-zero total gas cost.</p>
+  </div>
+
+  <!-- S8: ROADMAP -->
+  <div class="section" id="s8">
+    <div class="section-header">
+      <span class="section-num">08</span>
+      <span class="section-title">5-Day Sprint Roadmap</span>
+      <span class="section-badge badge-wf">Roadmap</span>
+    </div>
+    <p class="prose">Each day has a single non-negotiable deliverable — the gate that must be passed before work on the next day begins. Secondary tasks are stretch goals only and should not delay the gate.</p>
+    <div class="roadmap">
+      <div class="day-card">
+        <div class="day-label">Day 1</div>
+        <div class="day-title">Infrastructure Setup</div>
+        <ul class="day-tasks">
+          <li>Circle developer account live</li>
+          <li>Arc testnet USDC funded</li>
+          <li>Featherless API key active</li>
+          <li>Repo scaffolded, env vars set</li>
+          <li>One manual Arc tx confirmed</li>
+        </ul>
+      </div>
+      <div class="day-card">
+        <div class="day-label">Day 2</div>
+        <div class="day-title">CMO Brain Build</div>
+        <ul class="day-tasks">
+          <li>Gemini 3 Pro system prompt</li>
+          <li>Function calling schema defined</li>
+          <li>Budget policy logic coded</li>
+          <li>Agent responds to campaign brief</li>
+          <li>Emits correct payment function call</li>
+        </ul>
+      </div>
+      <div class="day-card">
+        <div class="day-label">Day 3</div>
+        <div class="day-title">Worker Agents Live</div>
+        <ul class="day-tasks">
+          <li>Featherless endpoint connected</li>
+          <li>x402 server middleware built</li>
+          <li>402 response headers correct</li>
+          <li>At least 2 specialist workers live</li>
+          <li>PM Agent vision check working</li>
+        </ul>
+      </div>
+      <div class="day-card">
+        <div class="day-label">Day 4</div>
+        <div class="day-title">Payment Loop E2E</div>
+        <ul class="day-tasks">
+          <li>Full 4-step loop runs clean</li>
+          <li>EIP-3009 signing works</li>
+          <li>Arc tx visible on explorer</li>
+          <li>10-task sequence tested</li>
+          <li>Error handling in place</li>
+        </ul>
+      </div>
+      <div class="day-card">
+        <div class="day-label">Day 5</div>
+        <div class="day-title">Demo & Polish</div>
+        <ul class="day-tasks">
+          <li>50+ tx batch on Arc</li>
+          <li>Dashboard built and recording</li>
+          <li>Vision demo screencast done</li>
+          <li>Submission write-up complete</li>
+          <li>All 6 gates verified</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- S9: RISKS -->
+  <div class="section" id="s9">
+    <div class="section-header">
+      <span class="section-num">09</span>
+      <span class="section-title">Risk Register</span>
+      <span class="section-badge badge-arch">Risk</span>
+    </div>
+    <p class="prose">Identified risks with owner assignments and mitigations. Any HIGH severity risk that cannot be mitigated by end of Day 3 requires an immediate team escalation call.</p>
+    <table class="risk-table">
+      <thead>
+        <tr>
+          <th>Risk</th>
+          <th>Severity</th>
+          <th>Mitigation</th>
+          <th>Owner</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Arc testnet is unstable or down during demo recording</td>
+          <td><span class="sev sev-high">HIGH</span></td>
+          <td>Record demo on Day 4 as backup. Keep Arc testnet tx screenshots. Have a local mock fallback that shows the correct 402 loop with simulated settlement proof.</td>
+          <td>Member 4</td>
+        </tr>
+        <tr>
+          <td>Gemini 3 Pro API rate limits hit during 50-tx batch</td>
+          <td><span class="sev sev-high">HIGH</span></td>
+          <td>Pre-cache the 50 CMO responses. The demo loop replays cached decisions through the live payment rail. Rate limits are on the reasoning layer, not the payment layer.</td>
+          <td>Member 1</td>
+        </tr>
+        <tr>
+          <td>EIP-3009 signing fails due to nonce conflicts in batch</td>
+          <td><span class="sev sev-med">MED</span></td>
+          <td>Use sequential nonce management. Each transaction increments by 1. Implement retry logic with exponential backoff (max 3 retries before failing the sub-task).</td>
+          <td>Member 4</td>
+        </tr>
+        <tr>
+          <td>Featherless model latency too high for real-time demo feel</td>
+          <td><span class="sev sev-med">MED</span></td>
+          <td>Pre-warm the two primary Specialist models before demo. If latency exceeds 5s, use a lightweight local fallback model that still sends the correct 402 headers.</td>
+          <td>Member 3</td>
+        </tr>
+        <tr>
+          <td>Vision model misreads SMM dashboard screenshot</td>
+          <td><span class="sev sev-low">LOW</span></td>
+          <td>Use a clean, high-contrast screenshot with large text. Pre-test with 5 sample images. Have a backup static JSON payload if vision verification fails gracefully.</td>
+          <td>Member 2</td>
+        </tr>
+        <tr>
+          <td>Team integration conflicts on shared API interfaces</td>
+          <td><span class="sev sev-low">LOW</span></td>
+          <td>Define and freeze the API contract between CMO ↔ PM ↔ Worker on Day 1 afternoon. Use TypeScript interfaces. No breaking changes without a team sync call first.</td>
+          <td>All</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- S10: DEMO CHECKLIST -->
+  <div class="section" id="s10">
+    <div class="section-header">
+      <span class="section-num">10</span>
+      <span class="section-title">Demo Submission Checklist</span>
+      <span class="section-badge badge-wf">Submission</span>
+    </div>
+    <p class="prose">The demo recording must clearly show all three of the following segments to satisfy judging criteria. Each segment should be no more than 60 seconds. The full demo should be under 3 minutes.</p>
+    <div class="checklist">
+      <div class="check-item">
+        <div class="check-dot dot-todo">○</div>
+        <div class="check-txt">
+          <strong>Segment A — The Margin Proof:</strong> Show a side-by-side comparison table. Traditional chain gas ($0.20) vs Arc gas ($0.0000). Narrate: "This business model is impossible on any other chain." Display the Arc block with 50 settlements and total gas cost.
+        </div>
+      </div>
+      <div class="check-item">
+        <div class="check-dot dot-todo">○</div>
+        <div class="check-txt">
+          <strong>Segment B — The 50-Transaction Dashboard:</strong> Screen record the SWAN dashboard running 50 CMO → Specialist hire cycles. Show the Arc Explorer in a split screen. The explorer must show a single Batch Settlement block containing all 50 micro-payments.
+        </div>
+      </div>
+      <div class="check-item">
+        <div class="check-dot dot-todo">○</div>
+        <div class="check-txt">
+          <strong>Segment C — Multimodal Vision Demo:</strong> Drop a screenshot of an SMM analytics dashboard into the PM Agent. Show Gemini Flash's vision analysis live — it should identify KPI numbers from the image and use them to verify the data payload before releasing payment.
+        </div>
+      </div>
+      <div class="check-item">
+        <div class="check-dot dot-todo">○</div>
+        <div class="check-txt">
+          <strong>Write-Up — Protocol Ideology Statement:</strong> Submission text must clearly state: SWAN is not an SMM tool. It is an Autonomous Marketing Protocol. Any agent on the internet can plug in to buy or sell marketing intelligence using USDC. This positions SWAN as infrastructure, not an app.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="div"></div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-left">SWAN PRD v1.0 · 4-person team · 5-day sprint · Confidential</div>
+    <div class="footer-right">
+      <span class="footer-tag">x402</span>
+      <span class="footer-tag">EIP-3009</span>
+      <span class="footer-tag">Arc L1</span>
+      <span class="footer-tag">Circle USDC</span>
+      <span class="footer-tag">Gemini 3 Pro</span>
+      <span class="footer-tag">Featherless</span>
+    </div>
+  </div>
+
+</div>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"499e684b7b1043878977050a0a606794","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
